@@ -22,13 +22,21 @@ public class Main {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         while(true) {
-            String wiadomosc = in.readLine();
-            String czas = in.readLine();
+            try {
+                String wiadomosc = in.readLine();
+                String czas = in.readLine();
 
-            if(wiadomosc == null) break;
+                if (wiadomosc == null) {
+                    throw new EmptyMessageException();
+                }
 
-            System.out.println("Wiadomość: " + wiadomosc);
-            System.out.println("Czas: " + czas);
+                System.out.println("Wiadomość: " + wiadomosc);
+                System.out.println("Czas: " + czas);
+            }
+            catch(EmptyMessageException e){
+                System.out.println(e.getMessage());
+                break;
+            }
         }
 
         in.close();
