@@ -8,12 +8,10 @@ public class Main {
 
         try {
             socket = new Socket("localhost", 4444);
-        }
-        catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             System.out.println("Nie znaleziono hosta");
             exit(1);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Nie udało się połączyć z hostem");
             exit(1);
         }
@@ -21,7 +19,7 @@ public class Main {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        while(true) {
+        while (true) {
             try {
                 String wiadomosc = in.readLine();
                 String czas = in.readLine();
@@ -32,13 +30,13 @@ public class Main {
 
                 System.out.println("Wiadomość: " + wiadomosc);
                 System.out.println("Czas: " + czas);
-            }
-            catch(EmptyMessageException e){
+            } catch (EmptyMessageException e) {
                 System.out.println(e.getMessage());
                 break;
             }
         }
 
+        System.out.println("Koniec programu");
         in.close();
         socket.close();
     }
