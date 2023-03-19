@@ -1,12 +1,9 @@
 import java.io.*;
 import java.net.*;
 import static java.lang.System.exit;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServerSocket serverSocket = null;
 
         try {
@@ -17,34 +14,17 @@ public class Main {
         }
         System.out.println("Utworzono hosta");
 
-        Socket socket = null;
-        try {
-            socket = serverSocket.accept();
-        } catch (IOException e) {
-            System.err.println("Nie udało się połączyć");
-            exit(1);
+        while (true) {
+            Socket socket;
+            try {
+                socket = serverSocket.accept();
+                System.out.println("Połączono z klientem: " + socket.getInetAddress().getHostAddress());
+            } catch (IOException e) {
+                System.err.println("Nie udało się połączyć");
+                continue;
+            }
+
+            new Thread(new KlientHandler(socket)).start();
         }
-        System.out.println("Połączono");
-
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        LocalTime obecnyCzas;
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
-        Scanner scanner = new Scanner(System.in);
-
-        while(scanner.hasNextLine()) {
-            System.out.print("Podaj tekst: ");
-            String wejscie = scanner.nextLine();
-            if(wejscie.isEmpty()) break;
-            out.println(wejscie);
-
-            obecnyCzas = LocalTime.now();
-            String czas = obecnyCzas.format(format);
-            out.println(czas);
-            System.out.println("Wysłano o godzinie: " + czas);
-        }
-
-        out.close();
-        socket.close();
-        serverSocket.close();
     }
 }
