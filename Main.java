@@ -101,6 +101,9 @@ public class Main {
                 case "dodaj kategorie":
                     System.out.print("Podaj nazwę kategorii: ");
                     nazwa = scanner.nextLine() + ":";
+                    if(mapa.containsKey(nazwa)) {
+                        break;
+                    }
                     mapa.put(nazwa, null);
                     System.out.println();
                     break;
