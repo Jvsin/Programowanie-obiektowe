@@ -7,7 +7,7 @@ public class Main {
         Socket socket = null;
 
         try {
-            socket = new Socket("localhost", 4444);
+            socket = new Socket("localhost", 2137);
         } catch (UnknownHostException e) {
             System.out.println("Nie znaleziono hosta");
             exit(1);
